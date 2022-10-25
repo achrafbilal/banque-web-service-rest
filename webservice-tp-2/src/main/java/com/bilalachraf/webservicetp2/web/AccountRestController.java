@@ -1,53 +1,53 @@
 package com.bilalachraf.webservicetp2.web;
 
-import com.bilalachraf.webservicetp2.entities.BankAccount;
-import com.bilalachraf.webservicetp2.repositories.BankAccountRepository;
-import org.springframework.beans.BeanUtils;
+import com.bilalachraf.webservicetp2.dto.requests.BankAccountDTORequest;
+import com.bilalachraf.webservicetp2.dto.responses.BankAccountDTOResponse;
+import com.bilalachraf.webservicetp2.mappers.BankAccountMapper;
+import com.bilalachraf.webservicetp2.services.AccountService;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-import java.util.UUID;
 
+@Controller
 @RestController
 @RequestMapping("/api/bankAccounts")
 public class AccountRestController {
-    private BankAccountRepository bankAccountRepository;
+    private AccountService accountService;
+    private BankAccountMapper bankAccountMapper=BankAccountMapper.getInstance();
 
-    public AccountRestController(BankAccountRepository bankAccountRepository) {
-        this.bankAccountRepository = bankAccountRepository;
+    public AccountRestController(AccountService accountService) {
+        this.accountService = accountService;
     }
+
     @GetMapping("")
-    public List<BankAccount> bankAccounts()
+    public List<BankAccountDTOResponse> bankAccounts()
     {
-        return bankAccountRepository.findAll();
+        return accountService.getAccounts();
     }
 
     @GetMapping("{id}")
-    public BankAccount getAccount(@PathVariable String id)
+    public BankAccountDTOResponse getAccount(@PathVariable String id)
     {
-        return bankAccountRepository.findById(id).orElseThrow(()->new RuntimeException(String.format("Account %s not found",id)));
+        return accountService.getAccount(id);
     }
 
     @PostMapping("")
-    public BankAccount save(@RequestBody  BankAccount bankAccount)
+    public BankAccountDTOResponse save(@RequestBody BankAccountDTORequest bankAccount)
     {
-        bankAccount.setId(UUID.randomUUID().toString());
-        return bankAccountRepository.save(bankAccount);
+        return accountService.addAccount(bankAccount);
     }
+
     @PutMapping("{id}")
-    public BankAccount update(@RequestBody  BankAccount bankAccount,@PathVariable String id)
+    public BankAccountDTOResponse update(@RequestBody  BankAccountDTORequest bankAccount,@PathVariable String id)
     {
-        BankAccount account=getAccount(id);
-        if(bankAccount.getBalance()!=null)account.setBalance(bankAccount.getBalance());
-        if(bankAccount.getType()!=null)account.setType(bankAccount.getType());
-        if(bankAccount.getCurrency()!=null)account.setCurrency(bankAccount.getCurrency());
-        if(bankAccount.getDateCreated()!=null)account.setDateCreated(bankAccount.getDateCreated());
-        return bankAccountRepository.save(account);
+        return accountService.editAccount(bankAccount,id);
     }
+
     @DeleteMapping("{id}")
     public void delete(@PathVariable  String id)
     {
-         bankAccountRepository.deleteById(id);
+         accountService.deleteAccount(id);
     }
 
 }

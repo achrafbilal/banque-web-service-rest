@@ -1,11 +1,13 @@
 package com.bilalachraf.webservicetp2.services;
 
-import com.bilalachraf.webservicetp2.DTORequest.BankAccountDTORequest;
-import com.bilalachraf.webservicetp2.DTOResponse.BankAccountResponseDTO;
+import com.bilalachraf.webservicetp2.dto.requests.BankAccountDTORequest;
+import com.bilalachraf.webservicetp2.dto.responses.BankAccountDTOResponse;
+import java.util.List;
 
 public interface AccountService {
-    BankAccountResponseDTO getAccount(String id);
-    BankAccountResponseDTO addAccount(BankAccountDTORequest bankAccount);
-    BankAccountResponseDTO editAccount(BankAccountDTORequest bankAccount);
-    BankAccountResponseDTO deleteAccount(BankAccountDTORequest bankAccount);
+    BankAccountDTOResponse getAccount(String id);
+    List<BankAccountDTOResponse> getAccounts();
+    BankAccountDTOResponse addAccount(BankAccountDTORequest bankAccount);
+    BankAccountDTOResponse editAccount(BankAccountDTORequest bankAccount,String id);
+    BankAccountDTOResponse deleteAccount(String id);
 }
