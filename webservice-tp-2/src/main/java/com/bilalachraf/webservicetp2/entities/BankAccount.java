@@ -10,9 +10,14 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 
 @Entity @Data @NoArgsConstructor @AllArgsConstructor @Builder
+/*@XmlRootElement(name = "compte")
+@XmlAccessorType(XmlAccessType.FIELD)*/
 public class BankAccount {
     @Id
     private String id;

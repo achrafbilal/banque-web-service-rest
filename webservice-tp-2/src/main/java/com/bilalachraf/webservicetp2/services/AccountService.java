@@ -9,5 +9,5 @@ public interface AccountService {
     List<BankAccountDTOResponse> getAccounts();
     BankAccountDTOResponse addAccount(BankAccountDTORequest bankAccount);
     BankAccountDTOResponse editAccount(BankAccountDTORequest bankAccount,String id);
-    BankAccountDTOResponse deleteAccount(String id);
+    void deleteAccount(String id);
 }
